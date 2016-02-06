@@ -1,0 +1,20 @@
+<code>
+ <?php
+$filename = 'aku.jpg';
+header('Content-Type: image/jpeg');
+list($width, $height) = getimagesize($filename);
+$newwidth = 110;
+$newheight = 140;
+$thumb = imagecreatetruecolor($newwidth, $newheight);
+$source = imagecreatefromjpeg($filename);
+//imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+exec('jpegtran.exe -copy none -optimize -outfile $source $thumb');
+imagejpeg($thumb)
+
+//imagejpeg($thumb,null,100)
+ 
+?>
+
+</code>
