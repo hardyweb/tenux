@@ -1,0 +1,20 @@
+<code>
+<?php
+ $filename = 'aku.png';
+header('Content-Type: image/png');
+list($width, $height) = getimagesize($filename);
+$newwidth = 110;
+$newheight = 140;
+$thumb = imagecreatetruecolor($newwidth, $newheight);
+imagealphablending($thumb, false);
+imagesavealpha($thumb, true);
+$transparent = imagecolorallocatealpha($thumb, 255, 255, 255, 127);
+imagefilledrectangle($thumb, 0, 0, $width, $height, $transparent);
+$source = imagecreatefrompng($filename);
+imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+//exec('pngquant --quality=65 $thumb'); 
+imagepng($thumb)
+?>
+
+
+</code>
