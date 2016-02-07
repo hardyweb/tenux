@@ -1,63 +1,27 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+<?php
+	/* Tujuan Kod 
+	// Untuk resize dan optimize gambar ikut saiz gambar yang dipaparkan di portal 
+	// ini adalah contoh menggunakan jpegtran ( boleh guna dalam linux dan windows)
+	// */ 
+	
+$filename = 'aku.jpg'; // input  ( kalau utk upload guna $_FILE[nama])
 
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-    <title>Tenux by hardyweb</title>
-  </head>
+header('Content-Type: image/jpeg'); // nak paparkan segera di browser, 
+									//nak simpan dalam folder atau sebagai blob/text
+									// kena guna ob_start ob_get_contents etc 
+									
+list($width, $height) = getimagesize($filename); //dapatkan tinggi dan lebar imej
+$newwidth = 110; // define lebar baru
+$newheight = 140; // define tinggi baru 
 
-  <body>
+$thumb = imagecreatetruecolor($newwidth, $newheight); //guna bantuan dg php
+$source = imagecreatefromjpeg($filename); 
 
-    <header>
-      <div class="container">
-        <h1>Tenux</h1>
-        <h2>Kandang Tenux</h2>
+imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height); //kecilkan saiz imej
+exec('jpegtran.exe -copy none -optimize -perfect -outfile $source $thumb'); //optimize gambar
 
-        <section id="downloads">
-          <a href="https://github.com/hardyweb/tenux/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/hardyweb/tenux/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/hardyweb/tenux" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
-        <h3>Welcome to GitHub Pages.</h3>
-
-<code>
- <?php
-$filename = 'aku.jpg';
-header('Content-Type: image/jpeg');
-list($width, $height) = getimagesize($filename);
-$newwidth = 110;
-$newheight = 140;
-$thumb = imagecreatetruecolor($newwidth, $newheight);
-$source = imagecreatefromjpeg($filename);
-//imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-
-imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-exec('jpegtran.exe -copy none -optimize -outfile $source $thumb');
-imagejpeg($thumb)
-
-//imagejpeg($thumb,null,100)
+imagejpeg($thumb) // jika guna imagejpeg($thumb,null,100), saiz file lebih besar
  
 ?>
-
-</code>
-
-
-       </section>
-    </div>
-
-    
-  </body>
-</html>
-
-
 
